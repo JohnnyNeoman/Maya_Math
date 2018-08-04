@@ -1,0 +1,409 @@
+
+
+/////////////////////////NEW
+
+string $allRenderedF[];
+string $faceVsALL[] = `ls-sl-fl`;
+string $faceVs[];
+vector $newAddedVec[];
+int $indexF[] = {1,0,2,3};
+vector $newAddedVecC[];
+vector $ALLAddedVecC[];
+clear $ALLAddedVecC;
+	int $i,$j  ;
+	for( $j = 0 ; $j < `size($faceVsALL)` ; $j++ ) {
+select -r $faceVsALL[$j];
+ConvertSelectionToVertices;
+ $faceVs= `ls-sl-fl`;
+$newAddedVec = PointArrayT($faceVs);
+//print $newAddedVec;
+$newAddedVec=VectorClockWise($newAddedVec);
+	for( $i = 0 ; $i < 4 ; $i++ ) {
+$ALLAddedVecC[`size($ALLAddedVecC)`]=$newAddedVec[$i];
+}
+//print $newAddedVec;
+//$allRenderedF[$j]=makePolygonQUAD($newAddedVec);
+PAUSE;
+}
+
+
+
+ConvertSelectionToVertices;
+ $faceVs= `ls-sl-fl`;
+$newAddedVec = PointArrayT($faceVs);
+print $newAddedVec;
+
+string $IndexKey;
+$IndexKey="";
+$IndexKey+=("{");
+int $VecIndex[];
+vector $Evec,$Ovec;
+	for( $j = 0 ; $j < `size($ALLAddedVecC)` ; $j++ ) {
+$Evec=$ALLAddedVecC[$j];
+for( $i = 0 ; $i < `size($newAddedVec)` ; $i++ ) {
+$Ovec=$newAddedVec[$i];
+if(($Evec.x==$Ovec.x)&&($Evec.y==$Ovec.y)&&($Evec.z==$Ovec.z)){
+$VecIndex[$j]=$i;
+//print ($VecIndex[$j]+" ");
+$IndexKey+=($VecIndex[$j]+",");
+}
+}
+}
+
+$IndexKey+=("};");
+print $IndexKey;
+
+print $VecIndex;
+
+vector $BvecIndex[];
+for( $i = 0 ; $i < `size($newAddedVec)` ; $i++ ){
+print ("$EvecIndex["+$i+"]=<<"+$newAddedVec[$i]+">>;"+"\n");
+}
+
+
+
+vector $vecIndex[];
+int $VecIndex[];
+
+float $fv =0.5;
+vector $SQUARE_PLANE[];
+
+
+$SQUARE_PLANE[0]=<<-$fv, -$fv, $fv>>;
+$SQUARE_PLANE[1]=<<$fv, -$fv, $fv>>;
+$SQUARE_PLANE[2]=<<-$fv, $fv, $fv>>;
+$SQUARE_PLANE[3]=<<$fv, $fv, $fv>>;
+$SQUARE_PLANE[4]=<<-$fv, $fv, -$fv>>;
+$SQUARE_PLANE[5]=<<$fv, $fv, -$fv>>;
+$SQUARE_PLANE[6]=<<-$fv, -$fv, -$fv>>;
+$SQUARE_PLANE[7]=<<$fv, -$fv, -$fv>>;
+
+vector $S_P[]=$SQUARE_PLANE;
+
+
+makePolygonQUAD({$S_P[4],$S_P[5],$S_P[7],$S_P[6]});//z- W
+makePolygonQUAD({$S_P[0],$S_P[1],$S_P[3],$S_P[2]});//z+ E
+makePolygonQUAD({$S_P[5],$S_P[3],$S_P[1],$S_P[7]});//x+ N
+makePolygonQUAD({$S_P[2],$S_P[4],$S_P[6],$S_P[0]});//x- S
+
+makePolygonQUAD({$S_P[5],$S_P[4],$S_P[2],$S_P[3]});//Y+ U
+makePolygonQUAD({$S_P[1],$S_P[0],$S_P[6],$S_P[7]});//Y- D
+/*
+proc GeneratePoly(vector $vecKey[],int $VecIndex[]){
+
+vector $vecKey[];
+int $VecIndex[];
+$vecKey=$EvecIndex;
+$VecIndex=$EVecIndex;
+
+vector $vecKeyTrans[];
+int $i;
+int $ii =-1;
+for( $i = 0 ; $i < ((`size($VecIndex)`)/4) ; $i++ ){
+makePolygonQUAD({$vecKey[$VecIndex[$ii+1]],$vecKey[$VecIndex[$ii+2]],$vecKey[$VecIndex[$ii+3]],$vecKey[$VecIndex[$ii+4]]});
+PAUSE;
+$ii+=4;
+}
+}
+*/
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////THIS IS SET 
+
+
+
+
+proc GeneratePoly(vector $vecKey[],int $VecIndex[]){
+int $i,$ii;
+for( $i = 0 ; $i < ((`size($VecIndex)`)/4) ; $i++ ){
+makePolygonQUAD({$vecKey[$VecIndex[$ii]],$vecKey[$VecIndex[$ii+1]],$vecKey[$VecIndex[$ii+2]],$vecKey[$VecIndex[$ii+3]]});
+PAUSE;
+$ii+=4;
+}
+}
+
+
+/////////////////////////////////////////////// typeF
+vector $FvecIndex[];
+int $FVecIndex[];
+$FVecIndex={0,1,2,3};
+$FvecIndex[0]=<<0.5, 0, -0.5>>;
+$FvecIndex[1]=<<-0.5, 0, -0.5>>;
+$FvecIndex[2]=<<-0.5, 0, 0.5>>;
+$FvecIndex[3]=<<0.5, 0, 0.5>>;
+//GeneratePoly($FvecIndex,$FVecIndex);
+//PAUSE;
+
+/////////////////////////////////////////////// typeE
+vector $EvecIndex[];
+int $EVecIndex[];
+$EVecIndex={0,3,2,1,3,0,5,4,6,7,0,1,8,5,0,7};
+$EvecIndex[0]=<<0.1666666716, 0, -0.1666666716>>;
+$EvecIndex[1]=<<0.1666666716, 0, -0.5>>;
+$EvecIndex[2]=<<0.3333333433, 0, -0.6666666865>>;
+$EvecIndex[3]=<<0.5, 0, -0.5>>;
+$EvecIndex[4]=<<0.6666666865, 0, -0.3333333433>>;
+$EvecIndex[5]=<<0.5, 0, -0.1666666716>>;
+$EvecIndex[6]=<<-0.5, 0, -0.5>>;
+$EvecIndex[7]=<<-0.5, 0, 0.5>>;
+$EvecIndex[8]=<<0.5, 0, 0.5>>;
+/////////////////////////////////////////////// typeD
+vector $DvecIndex[];
+int $DVecIndex[];
+$DVecIndex={0,3,2,1,3,0,5,4,6,9,8,7,9,6,11,10,0,1,12,13,13,14,5,0,6,13,12,11,13,6,7,14};
+$DvecIndex[0]=<<0.1666666716, 0, -0.1666666716>>;
+$DvecIndex[1]=<<0.1666666716, 0, -0.5>>;
+$DvecIndex[2]=<<0.3333333433, 0, -0.6666666865>>;
+$DvecIndex[3]=<<0.5, 0, -0.5>>;
+$DvecIndex[4]=<<0.6666666865, 0, -0.3333333433>>;
+$DvecIndex[5]=<<0.5, 0, -0.1666666716>>;
+$DvecIndex[6]=<<-0.1666666716, 0, 0.1666666716>>;
+$DvecIndex[7]=<<-0.1666666716, 0, 0.5>>;
+$DvecIndex[8]=<<-0.3333333433, 0, 0.6666666865>>;
+$DvecIndex[9]=<<-0.5, 0, 0.5>>;
+$DvecIndex[10]=<<-0.6666666865, 0, 0.3333333433>>;
+$DvecIndex[11]=<<-0.5, 0, 0.1666666716>>;
+$DvecIndex[12]=<<-0.5, 0, -0.5>>;
+$DvecIndex[13]=<<0, 0, 0>>;
+$DvecIndex[14]=<<0.5, 0, 0.5>>;
+/////////////////////////////////////////////// typec
+vector $CvecIndex[];
+int $CVecIndex[];
+$CVecIndex={0,3,2,1,3,0,5,4,6,9,8,7,9,6,11,10,0,6,7,5,12,13,6,0,13,14,11,6,15,14,13,12,15,12,0,1};
+$CvecIndex[0]=<<-0.1666666716, 0, -0.1666666716>>;
+$CvecIndex[1]=<<-0.5, 0, -0.1666666716>>;
+$CvecIndex[2]=<<-0.6666666865, 0, -0.3333333433>>;
+$CvecIndex[3]=<<-0.5, 0, -0.5>>;
+$CvecIndex[4]=<<-0.3333333433, 0, -0.6666666865>>;
+$CvecIndex[5]=<<-0.1666666716, 0, -0.5>>;
+$CvecIndex[6]=<<0.1666666716, 0, -0.1666666716>>;
+$CvecIndex[7]=<<0.1666666716, 0, -0.5>>;
+$CvecIndex[8]=<<0.3333333433, 0, -0.6666666865>>;
+$CvecIndex[9]=<<0.5, 0, -0.5>>;
+$CvecIndex[10]=<<0.6666666865, 0, -0.3333333433>>;
+$CvecIndex[11]=<<0.5, 0, -0.1666666716>>;
+$CvecIndex[12]=<<-0.1666666716, 0, 0.1666666716>>;
+$CvecIndex[13]=<<0.1666666716, 0, 0.1666666716>>;
+$CvecIndex[14]=<<0.5, 0, 0.5>>;
+$CvecIndex[15]=<<-0.5, 0, 0.5>>;
+/////////////////////////////////////////////// typeb
+vector $BvecIndex[];
+int $BVecIndex[];
+$BVecIndex={0,3,2,1,3,0,5,4,6,9,8,7,9,6,11,10,12,15,14,13,15,12,17,16,18,0,6,12,0,1,11,6,6,7,17,12,18,19,5,0,18,12,13,19};
+$BvecIndex[0]=<<0.1666666716, 0, -0.1666666716>>;
+$BvecIndex[1]=<<0.1666666716, 0, -0.5>>;
+$BvecIndex[2]=<<0.3333333433, 0, -0.6666666865>>;
+$BvecIndex[3]=<<0.5, 0, -0.5>>;
+$BvecIndex[4]=<<0.6666666865, 0, -0.3333333433>>;
+$BvecIndex[5]=<<0.5, 0, -0.1666666716>>;
+$BvecIndex[6]=<<-0.1666666716, 0, -0.1666666716>>;
+$BvecIndex[7]=<<-0.5, 0, -0.1666666716>>;
+$BvecIndex[8]=<<-0.6666666865, 0, -0.3333333433>>;
+$BvecIndex[9]=<<-0.5, 0, -0.5>>;
+$BvecIndex[10]=<<-0.3333333433, 0, -0.6666666865>>;
+$BvecIndex[11]=<<-0.1666666716, 0, -0.5>>;
+$BvecIndex[12]=<<-0.1666666716, 0, 0.1666666716>>;
+$BvecIndex[13]=<<-0.1666666716, 0, 0.5>>;
+$BvecIndex[14]=<<-0.3333333433, 0, 0.6666666865>>;
+$BvecIndex[15]=<<-0.5, 0, 0.5>>;
+$BvecIndex[16]=<<-0.6666666865, 0, 0.3333333433>>;
+$BvecIndex[17]=<<-0.5, 0, 0.1666666716>>;
+$BvecIndex[18]=<<0.1666666716, 0, 0.1666666716>>;
+$BvecIndex[19]=<<0.5, 0, 0.5>>;
+/////////////////////////////////////////////// typeA
+vector $AvecIndex[];
+int $AVecIndex[];
+$AVecIndex={0,3,2,1,3,0,5,4,6,9,8,7,9,6,11,10,12,15,14,13,15,12,17,16,18,21,20,19,21,18,23,22,6,7,17,12,1,11,6,0,18,0,6,12,12,13,23,18,5,0,18,19};
+$AvecIndex[0]=<<0.1666666716, 0, -0.1666666716>>;
+$AvecIndex[1]=<<0.1666666716, 0, -0.5>>;
+$AvecIndex[2]=<<0.3333333433, 0, -0.6666666865>>;
+$AvecIndex[3]=<<0.5, 0, -0.5>>;
+$AvecIndex[4]=<<0.6666666865, 0, -0.3333333433>>;
+$AvecIndex[5]=<<0.5, 0, -0.1666666716>>;
+$AvecIndex[6]=<<-0.1666666716, 0, -0.1666666716>>;
+$AvecIndex[7]=<<-0.5, 0, -0.1666666716>>;
+$AvecIndex[8]=<<-0.6666666865, 0, -0.3333333433>>;
+$AvecIndex[9]=<<-0.5, 0, -0.5>>;
+$AvecIndex[10]=<<-0.3333333433, 0, -0.6666666865>>;
+$AvecIndex[11]=<<-0.1666666716, 0, -0.5>>;
+$AvecIndex[12]=<<-0.1666666716, 0, 0.1666666716>>;
+$AvecIndex[13]=<<-0.1666666716, 0, 0.5>>;
+$AvecIndex[14]=<<-0.3333333433, 0, 0.6666666865>>;
+$AvecIndex[15]=<<-0.5, 0, 0.5>>;
+$AvecIndex[16]=<<-0.6666666865, 0, 0.3333333433>>;
+$AvecIndex[17]=<<-0.5, 0, 0.1666666716>>;
+$AvecIndex[18]=<<0.1666666716, 0, 0.1666666716>>;
+$AvecIndex[19]=<<0.5, 0, 0.1666666716>>;
+$AvecIndex[20]=<<0.6666666865, 0, 0.3333333433>>;
+$AvecIndex[21]=<<0.5, 0, 0.5>>;
+$AvecIndex[22]=<<0.3333333433, 0, 0.6666666865>>;
+$AvecIndex[23]=<<0.1666666716, 0, 0.5>>;
+//////////////////////////////////
+
+
+
+GeneratePoly($FvecIndex,$FVecIndex);
+PAUSE;
+
+GeneratePoly($EvecIndex,$EVecIndex);
+PAUSE;
+GeneratePoly($DvecIndex,$DVecIndex);
+PAUSE;
+GeneratePoly($CvecIndex,$CVecIndex);
+PAUSE;
+GeneratePoly($BvecIndex,$BVecIndex);
+PAUSE;
+GeneratePoly($AvecIndex,$AVecIndex);
+PAUSE;
+
+
+global vector $SQUARE_PLANE[];
+
+$SQUARE_PLANE[0]=<<0.5, 0, 0>>;
+$SQUARE_PLANE[1]=<<0, 0.5, 0>>;
+$SQUARE_PLANE[2]=<<0, 0, 0.5>>;
+$SQUARE_PLANE[3]=<<-0.5, 0, 0>>;
+$SQUARE_PLANE[4]=<<0, -0.5, 0>>;
+$SQUARE_PLANE[5]=<<0, 0, -0.5>>;
+
+vector $CellV = << 0, 0, 0 >>;
+
+// North South East West Up Down
+//=$BvecIndex;
+
+
+
+
+vector $Pts_CRV[];
+UnitMATRIX; SetGMATRIX;
+matrix $MatrixC[4][4]; 
+matrix $MatrixD[4][4];
+$MatrixC= $MatrixGlobalA; 
+$MatrixD= $MatrixGlobalA;
+float $theta =90;
+vector $posV;
+int $Six_sides[];
+$Six_sides={0,3,5,2,1,4};
+//if side is 0
+int $Case_N =0;
+int $i,$ii;
+vector $FvecIndex[];
+int $FVecIndex[];
+
+vector $vecIndex[];
+int $VecIndex[];
+string $A_Zs[];
+$A_Zs={"A","B","C","D","E","F"};
+
+for( $ii = 0 ; $ii < 6 ; $ii++ ){
+print ("$vecIndex = $"+$A_Zs[$ii]+"vecIndex;");
+print ("\n");
+eval("$vecIndex = $"+$A_Zs[$ii]+"vecIndex;");
+eval("$VecIndex = $"+$A_Zs[$ii]+"VecIndex;");
+//      North South East West Up Down 
+//       0     3     5     2   1   4
+/////    X     -x   -z     Z   Y   -y
+
+for( $i = 0 ; $i < 6 ; $i++ ){
+$Case_N =$i;
+ switch($Case_N) {
+	case 0: zrotMATRIX(($theta*-1));
+break;
+	case 1: zrotMATRIX(($theta));
+break;
+	case 2: xrotMATRIX(($theta));
+break;
+	case 3: xrotMATRIX(($theta*-1));
+break;	
+	case 4: print "No rotation"; print ("\n");
+break;
+	case 5: xrotMATRIX(($theta*2.0));
+break;
+}
+$posV=$SQUARE_PLANE[$Six_sides[$i]]*2.0; 
+Loc($posV);
+PAUSE;
+
+SetGMATRIX; 
+$MatrixD= $MatrixGlobalA;
+$MatrixD[3][0]=$posV.x; $MatrixD[3][1]=$posV.y; $MatrixD[3][2]=$posV.z; 		
+$Pts_CRV = MultPointMatrixArray($vecIndex, $MatrixC,$MatrixD);
+GeneratePoly($Pts_CRV,$VecIndex);
+PAUSE;
+UnitMATRIX; SetGMATRIX;
+}
+
+}
+
+////////////////
+
+	//xrotMATRIX(($theta));
+	//yrotMATRIX(($theta));
+ 	//zrotMATRIX(($theta));
+
+int $Side;
+$Side=0;
+	SetGMATRIX; 
+	$MatrixD= $MatrixGlobalA;
+$posV=$SQUARE_PLANE[$Side]; 
+// $MatrixD[3][0]=$posV.x;  $MatrixD[3][1]=$posV.y;	$MatrixD[3][2]=$posV.z; 		
+$Pts_CRV = MultPointMatrixArray($BvecIndex, $MatrixC,$MatrixD);
+GeneratePoly($Pts_CRV,$BVecIndex);
+
+
+
+
+for($Vec in $Pts_CRV){
+ $S_P[$CN]=$Vec+$SQUARE_PLANE[0];
+$CN++;
+}
+vector $CellV = << 0, 0, 0 >>;
+vector $S_P[]=$SQUARE_PLANE;
+int $CN=0;
+for($Vec in $SQUARE_PLANE){
+ $S_P[$CN]=$Vec+$CellV;
+$CN++;
+}
+
+print $SQUARE_PLANE;
+
+////////////////////////
+
+vector $ABvec[];
+
+vector $SQUARE_PLANE[];
+vector $ABvec[];
+$ABvec[0]=<<0.5, 0, -0.5>>;
+$ABvec[1]=<<-0.5, 0, -0.5>>;
+$ABvec[2]=<<-0.5, 0, 0.5>>;
+$ABvec[3]=<<0.5, 0, 0.5>>;
+
+
+int $FcornerS[];
+int $cZ[];
+$cZ={3,0,1,2};
+int $CN=0;
+for($eachLocCA in $O_Fc){
+if($eachLocCA==1){
+int $Xcf=$CN;
+int $Ab = $O_F[int(fmod($CN,4))];
+int $Ac = $O_F[int(fmod($CN+1,4))];
+if($Ab+$Ac==0){
+$FcornerS[`size($FcornerS)`]=$cZ[$CN];
+}
+}
+$CN++;
+}
+//print $FcornerS;
+if(`size($FcornerS)`>0){
+CellPolys($FcornerS, $CellV);
+}else{
+vector $ABveci[];
+$ABveci[0]=<<0.5, 0, -0.5>>+$CellV;
+$ABveci[1]=<<-0.5, 0, -0.5>>+$CellV;
+$ABveci[2]=<<-0.5, 0, 0.5>>+$CellV;
+$ABveci[3]=<<0.5, 0, 0.5>>+$CellV;
+makePolygonQUAD({$ABveci[0],$ABveci[1],$ABveci[2],$ABveci[3]});
+}
+
+
+
+

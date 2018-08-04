@@ -1,0 +1,63 @@
+vector $Pts_CRV[],$posV;
+UnitMATRIX; SetGMATRIX;
+matrix $MatrixC[4][4]; 
+matrix $MatrixD[4][4];
+$MatrixC= $MatrixGlobalA; 
+$MatrixD= $MatrixGlobalA;
+float $theta =90;
+
+int $i,$ii,$Case_N,$p,$Six_sides[];
+$Six_sides={0,3,5,2,1,4};
+//if side is 0
+$Case_N =0;
+
+vector $vecIndex[];
+int $VecIndex[];
+string $A_Zs[],$poly_face_Names[],$Allpoly_face[];
+$A_Zs={"A","B","C","D","E","F"};
+
+for( $ii = 0 ; $ii < 6 ; $ii++ ){
+print ("$vecIndex = $"+$A_Zs[$ii]+"vecIndex;");
+print ("\n");
+eval("$vecIndex = $"+$A_Zs[$ii]+"vecIndex;");
+eval("$VecIndex = $"+$A_Zs[$ii]+"VecIndex;");
+//      North South East West Up Down 
+//       0     3     5     2   1   4
+/////    X     -x   -z     Z   Y   -y
+PAUSE;
+
+for( $i = 0 ; $i < 6 ; $i++ ){
+$Case_N =$i;
+ switch($Case_N) {
+	case 0: zrotMATRIX(($theta*-1));
+break;
+	case 1: zrotMATRIX(($theta));
+break;
+	case 2: xrotMATRIX(($theta));
+break;
+	case 3: xrotMATRIX(($theta*-1));
+break;	
+	case 4: print "No rotation"; print ("\n");
+break;
+	case 5: xrotMATRIX(($theta*2.0));
+break;
+}
+$posV=$SQUARE_PLANE[$Six_sides[$i]]*2.0; 
+Loc($posV);
+PAUSE;
+
+SetGMATRIX; 
+$MatrixD= $MatrixGlobalA;
+$MatrixD[3][0]=$posV.x; $MatrixD[3][1]=$posV.y; $MatrixD[3][2]=$posV.z; 		
+$Pts_CRV = MultPointMatrixArray($vecIndex, $MatrixC,$MatrixD);
+$poly_face_Names=GeneratePoly($Pts_CRV,$VecIndex);
+for( $p = 0 ; $p < `size($poly_face_Names)` ; $p++ ){
+$Allpoly_face[`size($Allpoly_face)`]=$poly_face_Names[$p];
+}
+PAUSE;
+
+UnitMATRIX; SetGMATRIX;
+}
+delete $Allpoly_face;
+
+}
