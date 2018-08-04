@@ -21,7 +21,6 @@
 	return $XY;
 	}
 
-
 	proc int Grid_NxNxN_GetIndex(int $i, int $j , int $grid){
 	//
 	int $gridX = $grid;
@@ -41,7 +40,6 @@
 	int $gridPtsN=$gridX;
 	//9, 7,$gridX,  $OnorOff
 	int $x=$TTT[0]; int $y=$TTT[1];
-
 	int $bOldVal= $addOnstate[$Point];
 	*/
 	global string $CreatedItemG[];
@@ -50,8 +48,6 @@
 
 	int $Point = Grid_NxNxN_GetIndex($x,$y,$gridPtsN);
 	string $TempPoints[]; 
-
-
 	int $R =0;
 	int $bOldVal= $StatesCount[$Point];
 	$R = $bOldVal;
@@ -61,10 +57,10 @@
 					{
 						if ($bOldVal < $iClo - 1){
 							$R = $bOldVal + 1;
-	$SCount[$Point]+=1;
+							$SCount[$Point]+=1;
 						}else{
 							$R = 0;
-	$SCount[$Point]=0;
+							$SCount[$Point]=0;
 	}
 					} else // 0, 1
 					{
@@ -93,7 +89,6 @@
 	$allIndexCA[6] = Grid_NxNxN_GetIndex( $minusx,$plusy,$gridPtsN);
 	$allIndexCA[7] = Grid_NxNxN_GetIndex( $plusx,$plusy,$gridPtsN);
 	//$allIndexCA[8] = Grid_NxNxN_GetIndex($x,$y,$gridPtsN);
-
 	//$total=0;
 	for($eachLocCA in $allIndexCA){
 	//print ($addOnstate[$eachLocCA]+"\n");
@@ -103,25 +98,24 @@
 	}
 	}
 	//print $total;
-
 	//for($eachLocCA in $allIndexCA){
 	// $total += $OnorOff[$eachLocCA];
 	//}
 	///////////////////// print $total ;
-
 				if ($bOldVal != 0) {
 						// print ("A"+"\n");
-							if(SetRulesS($total)==1){
-							//print ("Ab"+"\n");
-	$SCount[$Point]=1;
+						if(SetRulesS($total)==1){
+						//print ("Ab"+"\n");
+							$SCount[$Point]=1;
 								$R=1;
 							}else{ if($bOldVal < $iClo - 1){
-						  //print ("B"+"\n");
+						  	//print ("B"+"\n");
 								$R= $bOldVal + 1;
-	$SCount[$Point]+=1;
+								$SCount[$Point]+=1;
 							}else{
-		$SCount[$Point]=0;						$R=0;
-		 // print ("Ba"+"\n");	
+						$SCount[$Point]=0; 
+							$R=0;
+		 			// print ("Ba"+"\n");	
 	}
 	}
 						}else{
@@ -133,23 +127,16 @@
 
 							 //print ("Ca"+"\n");
 						}
-
 			 // print $R;
-
-	///////////////////
-
+								
 					}
-
 
 
 	if($R>0){
 	$R=1;}else{$R=0;}
-
 	// print $R;
-
 	return $R;
 	}
-
 
 	proc int SetRulesB(int $total){
 	global int $Births[];
@@ -162,7 +149,6 @@
 	return $TrueFalse;
 	}
 
-
 	proc int SetRulesS(int $total){
 	global int $Survivals[];
 	int $TrueFalse=0;
@@ -173,7 +159,6 @@
 	}
 	return $TrueFalse;
 	}
-
 
 	proc PAUSE(){
 		playButtonStepForward;
@@ -186,8 +171,6 @@
 		setAttr ($LocObjects[0]+".translate")  $Points[0] $Points[1] $Points[2];
 		return $LocObjects[0];
 	}
-
-
 
 	global int $Births[];
 	global int $Survivals[];
@@ -258,8 +241,6 @@
 	setAttr ($isSelectedZx[0]+".overrideEnabled ") 1;
 	}
 
-
-
 	/////////////////////
 	//RESET  $OnorOff = $addOnstateOLD;
 	/*
@@ -310,8 +291,6 @@
 
 	$OnorOff=$addOnstateOLD;
 	$addOnstate =$addOnstateOLD;
-
-
 
 	////////////////////
 	float $OffS =0.01;
@@ -374,10 +353,8 @@
 	break;
 
 	}
-
 	//int $iClo;
 	//356/23/6
-
 	//Flaming Starbows
 	//   347/23/8
 	 $Survivals ={3,4,7};
@@ -449,30 +426,21 @@
 						$LocTemp = ($object+ $IindexCAT);
 						$LocCorrent = ($object+ $IindexCAT);
 
-
-
-
 	$newIntOnorOff[$IindexCA] = life_check2d($i, $j,$gridX,  $OnorOff,$addOnstate,$iii);
 			if(($newIntOnorOff[$IindexCA]==1)){
 	$CountOn++;
-							$ListONVEC[`size($ListONVEC)`]= << $i, $iii, $j >>;
-							
+							$ListONVEC[`size($ListONVEC)`]= << $i, $iii, $j >>;							
 								//$addOnstateT[$IindexCA]+=1; 
 								$tempOnCells[`size($tempOnCells)`]=$CreatedItem[$IindexCA];
 							setAttr ( $LocCorrent+".scale") $OnS $OnS $OnS;	
 							SetGridItemColorCAString($LocCorrent, $addOnstate[$IindexCA]+$iClo );
 
 	//setAttr ( $LocCorrent+".translateY") $addOnstate[$IindexCA];	
-
-	 }else{
-						
+	 }else{						
 							//$addOnstateT[$IindexCA] = 0; 
 							SetGridItemColorCAString($LocCorrent, -1 );
 							setAttr ( $LocCorrent+".scale") $OffS $OffS $OffS;
 	//setAttr ( $LocCorrent+".translateY") $addOnstate[$IindexCA];	
-
-
-
 	}
 			$countN++;	
 			$j++;
@@ -502,21 +470,12 @@
 	$iii++;
 	currentTime $iii ;
 
-
 	}
-
 	/////////////END
-
-
-
-
 	/*
 	size($ListONVEC);
 	Stree3D($ListONVEC,20);
 	*/
-
-
-
 		int $i = 0;
 		int $j = 0;
 	$countN = 0;
@@ -529,8 +488,6 @@
 	}
 	$i++;
 	}
-
-
 	/*
 	 switch($Ns) {
 		case 0:
@@ -538,30 +495,23 @@
 	 $Survivals ={2,3,4,6,7,8};
 	 $Births = {1,2,3,4,6,7,8};
 	break;
-
 		case 1:
 	//print ("Electric"+"\n");
 	 $Survivals ={2,3,4,5,6,7};
 	 $Births = {1,3,4,7};
 	break;
-
 		case 2:
 	//print ("Coagulations"+"\n");
 	 $Survivals ={2,3,5,6,7,8};
 	 $Births = {3,7,8};
 	break;
-
 		case 3:
 	//print ("LIFE"+"\n");
 	 $Survivals ={2,3};
 	 $Births = {3};
 	break;
-
 	}
 	*/
-
-
-
 	 $iii = 0;
 		int $i = 0;
 		int $j = 0;
@@ -586,11 +536,7 @@
 	$OnorOff = $newIntOnorOff;
 	$iii++;
 	}
-
-
-
 	global vector $SQUARE_PLANE[];
-
 	$SQUARE_PLANE[0]=<<-0.5, -0.5, 0.5>>;
 	$SQUARE_PLANE[1]=<<0.5, -0.5, 0.5>>;
 	$SQUARE_PLANE[2]=<<-0.5, 0.5, 0.5>>;
@@ -602,7 +548,6 @@
 
 	float $fv =0.5;
 	vector $SQUARE_PLANE[];
-
 	$SQUARE_PLANE[0]=<<-$fv, -$fv, $fv>>;
 	$SQUARE_PLANE[1]=<<$fv, -$fv, $fv>>;
 	$SQUARE_PLANE[2]=<<-$fv, $fv, $fv>>;
@@ -647,12 +592,8 @@
 
 	}   
 	/*
-
-
 	float $fv =0.5;
 	vector $SQUARE_PLANE[];
-
-
 	$SQUARE_PLANE[0]=<<-$fv, -$fv, $fv>>;
 	$SQUARE_PLANE[1]=<<$fv, -$fv, $fv>>;
 	$SQUARE_PLANE[2]=<<-$fv, $fv, $fv>>;
@@ -661,19 +602,13 @@
 	$SQUARE_PLANE[5]=<<$fv, $fv, -$fv>>;
 	$SQUARE_PLANE[6]=<<-$fv, -$fv, -$fv>>;
 	$SQUARE_PLANE[7]=<<$fv, -$fv, -$fv>>;
-
 	vector $S_P[]=$SQUARE_PLANE;
-
-
 	makePolygonQUAD({$S_P[4],$S_P[5],$S_P[7],$S_P[6]});//z- W
 	makePolygonQUAD({$S_P[0],$S_P[1],$S_P[3],$S_P[2]});//z+ E
 	makePolygonQUAD({$S_P[5],$S_P[3],$S_P[1],$S_P[7]});//x+ N
 	makePolygonQUAD({$S_P[2],$S_P[4],$S_P[6],$S_P[0]});//x- S
-
 	makePolygonQUAD({$S_P[5],$S_P[4],$S_P[2],$S_P[3]});//Y+ U
 	makePolygonQUAD({$S_P[1],$S_P[0],$S_P[6],$S_P[7]});//Y- D
-
-
 
 	proc string Loc(float $Points[]){
 		string $LocObjects[] = `spaceLocator -p 0 0 0`;
@@ -681,8 +616,6 @@
 		setAttr ($LocObjects[0]+".scale")  0.15 0.15 0.15;
 		return $LocObjects[0];
 	}
-
-
 	int $TTT[]= Index_NxNxN_GetGrid(866 ,  $gridX);
 	int $gridPtsN=$gridX;
 	//9, 7,$gridX,  $OnorOff
@@ -695,9 +628,6 @@
 	//////////////////////////////////////////////////////////////////////
 
 	proc  life_Make3d(int $x, int $y, int $gridPtsN, int $OnorOff[],int  $StatesCount,int $cycle){
-
-
-
 
 	global vector $SQUARE_PLANE[];
 	global string $CreatedItemG[];
@@ -846,37 +776,23 @@
 
 	}
 
-
-
-
 	string $ObjectListX[] =`ls -sl -fl`;
 	vector $ABvec[] =  PointArrayT($ObjectListX);
 	print $ABvec;
-
 	{"pPlane1.vtx[3]","pPlane1.vtx[2]", "pPlane1.vtx[0]","pPlane1.vtx[1]"} ;
 
 	vector $ABvec[] =  PointArrayT({"pPlane1.vtx[3]","pPlane1.vtx[2]", "pPlane1.vtx[0]","pPlane1.vtx[1]"} );
 	print $ABvec;
-
 	Loc $ABvec[0];
-
-
-
 	vector $DirecS[];
 	$DirecS[0]=<<1,0,0>>;
 	$DirecS[1]=<<-1,0,0>>;
 	$DirecS[2]=<<0,0,1>>;
 	$DirecS[3]=<<0,0,-1>>;
-
 	////////////////
-
-
-
 	proc CellPolys(int $NumSq[], vector $VecP){
-
 	//delete  $AllPolys;
 	//clear $AllPolys;
-
 	string $AllPolys[];
 
 	vector $ABvec[];
@@ -1033,10 +949,7 @@
 	//////////
 	}
 
-
-
 	if($CornerN!=1){
-
 	if($SizeNc==4){
 	$AllPolys[`size($AllPolys)`]= makePolygonQUAD({$EdgeTemp[7],$EdgeTemp[0+5],$EdgeTemp[6+5],$EdgeTemp[7+5]});
 	PAUSE;
@@ -1078,7 +991,6 @@
 	}
 	}
 	}
-
 
 	//////////////
 	if($SizeNc==2){
